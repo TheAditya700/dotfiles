@@ -189,6 +189,49 @@ setup_eza() {
     print_success "eza configured"
 }
 
+# Setup LazyVim
+setup_neovim() {
+    print_status "Setting up LazyVim..."
+    
+    # Only setup for Linux/macOS
+    if [ "$OS" = "windows" ]; then
+        print_warning "LazyVim setup skipped on Windows (use WSL)"
+        return
+    fi
+    
+    # Create nvim config directory
+    mkdir -p "$HOME/.config/nvim/lua/plugins"
+    
+    # Backup existing nvim config
+    backup_file "$HOME/.config/nvim/lua/plugins/catppuccin.lua"
+    
+    # Create symlink for catppuccin config
+    if [ -f "$SCRIPT_DIR/common/nvim/lua/plugins/catppuccin.lua" ]; then
+        ln -sf "$SCRIPT_DIR/common/nvim/lua/plugins/catppuccin.lua" "$HOME/.config/nvim/lua/plugins/"
+        print_status "Created symlink for Catppuccin theme"
+    fi
+    
+    # Install Neovim if not present
+    if ! command -v nvim >/dev/null 2>&1; then
+        print_status "Installing Neovim..."
+        case $OS in
+            "linux"|"wsl")
+                if command -v apt >/dev/null 2>&1; then
+                    sudo apt update
+                    sudo apt install -y neovim
+                elif command -v dnf >/dev/null 2>&1; then
+                    sudo dnf install -y neovim
+                fi
+                ;;
+            "macos")
+                brew install neovim
+                ;;
+        esac
+    fi
+    
+    print_success "LazyVim configured"
+}
+
 # Setup Wezterm (Windows only)
 setup_wezterm() {
     if [ "$OS" = "windows" ]; then
@@ -242,6 +285,7 @@ main() {
     setup_fish
     setup_tmux
     setup_eza
+    setup_neovim
     setup_wezterm
     
     # Change shell (optional, ask user)

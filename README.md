@@ -11,6 +11,7 @@ A unified dotfiles repository that works across WSL, macOS, and Windows.
 - 🖥️ **Tmux** - Terminal multiplexer with vim navigation
 - 🎨 **Catppuccin Theme** - Consistent theming across tools
 - 📁 **eza** - Modern ls replacement with icons
+- 🚀 **LazyVim** - Modern Neovim configuration with custom Catppuccin theme
 
 ## Quick Install
 
@@ -26,7 +27,9 @@ chmod +x install.sh
 ```
 dotfiles/
 ├── common/          # Shared configs across platforms
-│   └── fish/        # Fish shell configuration
+│   ├── fish/        # Fish shell configuration
+│   └── nvim/        # LazyVim configuration
+│       └── lua/plugins/catppuccin.lua
 ├── linux/           # Linux/WSL specific configs
 │   ├── .tmux.conf   # Tmux configuration
 │   └── eza/         # eza themes and config
